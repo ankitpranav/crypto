@@ -3,11 +3,10 @@ package com.example.crypto.controller;
 
 import com.example.crypto.model.CryptoResponse;
 import com.example.crypto.service.CryptoService;
+import com.google.gwt.thirdparty.json.JSONException;
+import com.google.gwt.thirdparty.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -29,4 +28,8 @@ public class CryptoController {
         return cryptoService.minMaxOfPrices(minutes);
     }
 
+    @RequestMapping(value = "/getCurrentPrice", method = RequestMethod.GET)
+    public String getCurrPrice(@RequestParam("currency") String currency) throws IOException, JSONException {
+        return cryptoService.getCurrPrice(currency);
+    }
 }

@@ -2,8 +2,12 @@ package com.example.crypto.service;
 
 import com.example.crypto.model.CryptoResponse;
 import com.example.crypto.util.CryptoUtil;
+import com.google.gwt.thirdparty.json.JSONException;
+import com.google.gwt.thirdparty.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -20,7 +24,8 @@ public class CryptoService {
 
     HashMap<String,Double> cryptoRecordMap;
 
-    public CryptoService(CryptoUtil cryptoUtil) {
+
+    public CryptoService(CryptoUtil cryptoUtil) throws IOException, JSONException {
         this.cryptoUtil = cryptoUtil;
         cryptoRecordMap = cryptoUtil.createCSV();
     }
@@ -71,6 +76,10 @@ public class CryptoService {
         cryptoResponse.setMinValue(min);
         cryptoResponse.setMaxValue(max);
         return cryptoResponse;
+    }
+
+    public String getCurrPrice(String currency) throws IOException, JSONException {
+        return cryptoUtil.getCurrPrice(currency);
     }
 
 }

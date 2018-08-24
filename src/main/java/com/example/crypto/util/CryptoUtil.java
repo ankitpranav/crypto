@@ -1,21 +1,23 @@
 package com.example.crypto.util;
-
-import com.example.crypto.model.CryptoRecordVO;
+import com.google.gwt.thirdparty.json.JSONException;
+import com.google.gwt.thirdparty.json.JSONObject;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
+import java.net.*;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
+
 
 @Service
 public class CryptoUtil {
 
     HashMap<String,Double> bitcoinMap = new HashMap<>();
+
+    HashMap<String , Double> currPrice = new HashMap<>();
 
     public HashMap<String,Double> createCSV() {
         String dirName = "/home/pranavankit/Downloads/";
@@ -31,6 +33,14 @@ public class CryptoUtil {
             e.printStackTrace();
         }
         return processAndPersistFile();
+    }
+
+    public String getCurrPrice(String currency) throws IOException, JSONException {
+
+        JSONObject json = new JSONObject(IOUtils.toString(new URL("https://blockchain.info/ticker"), Charset.forName("UTF-8")));
+
+        return json.getJSONObject(currency).getString("buy");
+
     }
 
     public void saveFileFromUrlWithJavaIO(String fileName, String fileUrl)
@@ -88,4 +98,5 @@ public class CryptoUtil {
         bitcoinMap.put(date,price);
         return bitcoinMap;
     }
+
 }
